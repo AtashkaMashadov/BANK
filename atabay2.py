@@ -1,63 +1,64 @@
 from tkinter import *
 from tkinter import messagebox
+
+
 class Users():
-    def __init__(self,username,password,name,balans,surname,birthday,gender):
-        self.username= username
-        self.password=password
+    def __init__(self, username, password, name, balans, surname, birthday, gender):
+        self.username = username
+        self.password = password
         self.name = name
         self.balans = balans
         self.surname = surname
         self.bir = birthday
-        self.gender=gender
-        
-    def save(self): 
-        f=open('Data.txt','a')
-        f.write(self.username+':'+self.password+':'+self.name+':'+str(self.balans)+':'+self.surname+':'+self.bir+':'+self.gender+'\n')
+        self.gender = gender
 
-    def change_pass(self,old,new):
-        if self.password==old:
-            self.password=new
+    def save(self):
+        f = open('Data.txt', 'a')
+        f.write(self.username+':'+self.password+':'+self.name+':' +
+                str(self.balans)+':'+self.surname+':'+self.bir+':'+self.gender+'\n')
+
+    def change_pass(self, old, new):
+        if self.password == old:
+            self.password = new
             print('OK')
         else:
-            mesg=messagebox.showerror(message='Old pass is not correct')
-    
-    def givem(self,money):
-        self.balans=str(int(self.balans)+money)
-    def takem(self,money):
-        self.balans=str(int(self.balans)-money)
-    def chargem(self,money,uname):
+            mesg = messagebox.showerror(message='Old pass is not correct')
+
+    def givem(self, money):
+        self.balans = str(int(self.balans)+money)
+
+    def takem(self, money):
+        self.balans = str(int(self.balans)-money)
+
+    def chargem(self, money, uname):
         if Users.find_user(uname) is not None:
-            reciver=Users.find_user(uname)
-            
-            self.balans=str(int(self.balans)-money)
-            reciver.balans=str(int(reciver.balans)+money)
+            reciver = Users.find_user(uname)
+
+            self.balans = str(int(self.balans)-money)
+            reciver.balans = str(int(reciver.balans)+money)
 
             self.update()
             reciver.update()
         else:
-            mesg=messagebox.showerror(info='Not found 404',message='User not found')
+            mesg = messagebox.showerror(
+                info='Not found 404', message='User not found')
 
-
-    
     def update(self):
-        users=open('Data.txt').readlines()
-        f=open('Data.txt','w')
+        users = open('Data.txt').readlines()
+        f = open('Data.txt', 'w')
         for i in users:
-            if i.split(':')[0]==self.username:
-                f.write(self.username+':'+self.password+':'+self.name+':'+str(self.balans)+':'+self.surname+':'+self.bir+':'+self.gender)
+            if i.split(':')[0] == self.username:
+                f.write(self.username+':'+self.password+':'+self.name+':' +
+                        str(self.balans)+':'+self.surname+':'+self.bir+':'+self.gender)
             else:
                 f.write(i)
-            
+
     def find_user(uname):
-        f=open('Data.txt')
+        f = open('Data.txt')
         for i in f:
-            if i.split(':')[0]==uname:
-                return Users(i.split(':')[0],i.split(':')[1],i.split(':')[2],i.split(':')[3],i.split(':')[4],i.split(':')[5],i.split(':')[6])
+            if i.split(':')[0] == uname:
+                return Users(i.split(':')[0], i.split(':')[1], i.split(':')[2], i.split(':')[3], i.split(':')[4], i.split(':')[5], i.split(':')[6])
         return None
-
-
-
-
 
 
 root = Tk()
@@ -183,7 +184,7 @@ def test():
             l4 = ent4.get()
             l5 = ent5.get()
             l6 = ent6.get()
-            user=Users((a+l1),(a+l2),(a+l3),(a+l4),(a+l5),(a+l6),o0)
+            user = Users((a+l1), (a+l2), (a+l3), (a+l4), (a+l5), (a+l6), o0)
             user.save()
             a = (a+l1)+':'+(a+l2)+':'+(a+l3)+':' + \
                 (a+l4)+':'+(a+l5)+':'+(a+l6)+':'+o0
@@ -246,14 +247,14 @@ def test():
 
                     def sumb():
                         print(a)
-                        a2=int(entry1.get())
-                        reciver1=Users.find_user(a)
+                        a2 = int(entry1.get())
+                        reciver1 = Users.find_user(a)
                         if reciver1 is not None:
                             print(reciver1.balans)
                             reciver1.givem(a2)
                             reciver1.update()
-                            moneyw=reciver1.balans
-                            label3['text']='Balance: '+str(moneyw)
+                            moneyw = reciver1.balans
+                            label3['text'] = 'Balance: '+str(moneyw)
                             win3.destroy()
 
                     lbl = Label(win3, text='Write here the amount of money')
@@ -262,79 +263,86 @@ def test():
                     entry1.grid(row=1, column=0)
                     btn = Button(win3, text='Sumbit', command=sumb)
                     btn.grid(row=2, column=0)
+
                 def take():
                     win4 = Toplevel()
                     win4.title('Take Money')
 
                     def sumb():
                         print(a)
-                        a2=int(entry1.get())
-                        reciver1=Users.find_user(a)
+                        a2 = int(entry1.get())
+                        reciver1 = Users.find_user(a)
                         if reciver1 is not None:
                             reciver1.takem(a2)
                             reciver1.update()
-                            moneyw=reciver1.balans
-                            label3['text']='Balance: '+str(moneyw)
+                            moneyw = reciver1.balans
+                            label3['text'] = 'Balance: '+str(moneyw)
                             win4.destroy()
-                    lbl = Label(win4, text='Write here the amount of money you take')
+                    lbl = Label(
+                        win4, text='Write here the amount of money you take')
                     lbl.grid(row=0, column=0)
                     entry1 = Entry(win4)
                     entry1.grid(row=1, column=0)
                     btn = Button(win4, text='Sumbit', command=sumb)
                     btn.grid(row=2, column=0)
+
                 def change():
-                    win5=Toplevel()
+                    win5 = Toplevel()
+
                     def chn():
                         print(a)
-                        a1=ent1.get()
-                        b1=ent2.get()
-                        c1=ent3.get()
-                        reciver1=Users.find_user(a)
-                        if reciver1 is not None and b1==c1:
-                            reciver1.change_pass(a1,b1)
+                        a1 = ent1.get()
+                        b1 = ent2.get()
+                        c1 = ent3.get()
+                        reciver1 = Users.find_user(a)
+                        if reciver1 is not None and b1 == c1:
+                            reciver1.change_pass(a1, b1)
                             reciver1.update()
-                            passw=reciver1.password
-                            label2['text']='Pass: '+passw
+                            passw = reciver1.password
+                            label2['text'] = 'Pass: '+passw
                             win5.destroy()
                         else:
-                            mesg=messagebox.showerror(message='New passes doesnt match correct')
-                    lbl=Label(win5,text='Old pass')
-                    lbl.grid(row=0,column=0)
-                    ent1=Entry(win5)
-                    ent1.grid(row=1,column=0)
-                    lbl1=Label(win5,text='New pass')
-                    lbl1.grid(row=2,column=0)
-                    ent2=Entry(win5)
-                    ent2.grid(row=3,column=0)
-                    lbl1=Label(win5,text='New pass again')
-                    lbl1.grid(row=4,column=0)
-                    ent3=Entry(win5)
-                    ent3.grid(row=5,column=0)
-                    btn=Button(win5,text='Change',command=chn)
-                    btn.grid(row=6,column=0)
+                            mesg = messagebox.showerror(
+                                message='New passes doesnt match correct')
+                    lbl = Label(win5, text='Old pass')
+                    lbl.grid(row=0, column=0)
+                    ent1 = Entry(win5)
+                    ent1.grid(row=1, column=0)
+                    lbl1 = Label(win5, text='New pass')
+                    lbl1.grid(row=2, column=0)
+                    ent2 = Entry(win5)
+                    ent2.grid(row=3, column=0)
+                    lbl1 = Label(win5, text='New pass again')
+                    lbl1.grid(row=4, column=0)
+                    ent3 = Entry(win5)
+                    ent3.grid(row=5, column=0)
+                    btn = Button(win5, text='Change', command=chn)
+                    btn.grid(row=6, column=0)
+
                 def charge():
-                    win6=Toplevel()
+                    win6 = Toplevel()
+
                     def chr():
                         print(a)
-                        a1=ent1.get()
-                        b1=ent2.get()
-                        reciver1=Users.find_user(a)
+                        a1 = ent1.get()
+                        b1 = ent2.get()
+                        reciver1 = Users.find_user(a)
                         if reciver1 is not None:
-                            reciver1.chargem(int(b1),a1)
+                            reciver1.chargem(int(b1), a1)
                             reciver1.update()
-                            monw=int(reciver1.balans)
-                            label3['text']='Balance: '+str(monw)
+                            monw = int(reciver1.balans)
+                            label3['text'] = 'Balance: '+str(monw)
                             win6.destroy()
-                    lbl=Label(win6,text='Username')
-                    lbl.grid(row=0,column=0)
-                    ent1=Entry(win6)
-                    ent1.grid(row=1,column=0)
-                    lbl1=Label(win6,text='Amount of money')
-                    lbl1.grid(row=2,column=0)
-                    ent2=Entry(win6)
-                    ent2.grid(row=3,column=0)
-                    btn=Button(win6,text='Charge',command=chr)
-                    btn.grid(row=4,column=0)
+                    lbl = Label(win6, text='Username')
+                    lbl.grid(row=0, column=0)
+                    ent1 = Entry(win6)
+                    ent1.grid(row=1, column=0)
+                    lbl1 = Label(win6, text='Amount of money')
+                    lbl1.grid(row=2, column=0)
+                    ent2 = Entry(win6)
+                    ent2.grid(row=3, column=0)
+                    btn = Button(win6, text='Charge', command=chr)
+                    btn.grid(row=4, column=0)
 
                 COLOR = '#3b5998'
                 COLOR1 = 'white'
@@ -367,17 +375,17 @@ def test():
                               bg=COLOR, fg=COLOR1, font=FONT, command=give)
                 but5.grid(row=0, column=1)
                 but6 = Button(frm1, text='Take Money', height=4,
-                              width=10, bg=COLOR, fg=COLOR1, font=FONT,command=take)
+                              width=10, bg=COLOR, fg=COLOR1, font=FONT, command=take)
                 but6.grid(row=1, column=1, rowspan=2)
                 but7 = Button(frm1, text='Charge Money', height=4,
-                              width=11, bg=COLOR, fg=COLOR1, font=FONT,command=charge)
+                              width=11, bg=COLOR, fg=COLOR1, font=FONT, command=charge)
                 but7.grid(row=1, column=2, rowspan=2)
                 but8 = Button(frm1, text='Change pass', height=4,
-                              width=11, bg=COLOR, fg=COLOR1, font=FONT,command=change)
+                              width=11, bg=COLOR, fg=COLOR1, font=FONT, command=change)
                 but8.grid(row=0, column=2)
 
                 o += 1
-                
+
         if o == 0:
             messagebox.showerror(title='Not found', message=str(
                 a)+' is not found or pass is not correct')
